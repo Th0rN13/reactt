@@ -9,8 +9,8 @@ import {
 
 const Transfer = (props) => {
   return <div className="transfer">
-    <div className="transfer__description">this.props.description</div>
-    <div className="transfer__amount">this.props.amount</div>
+    <div className="transfer__description">{props.description}</div>
+    <div className="transfer__amount">{props.amount}</div>
   </div>
 }
 
@@ -26,19 +26,17 @@ class List extends Component {
   }
   render () {
     return <div className="transfers-list">
-      props.transfers.map(transfer =>
+      {this.state.transfers.map((transfer) =>
         <Transfer
-          // description={transfer.description}
-          // amount={transfer.amount}
-        />)
-      )
+          description={transfer.description}
+          amount={transfer.amount}
+        />)}
     </div>
   }
 }
 
-const Menu = (props) => <div className="menu"></div>;
 const Config = (props) => <div className="config"></div>;
-const Header = (props) => <nav className="navigation"></nav>;
+const HeaderMenu = (props) => <nav className="navigation"></nav>;
 
 const Main = (props) => (
   <div>
@@ -69,7 +67,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <HeaderMenu />
         <Main {...this.state}/>
       </div>
     );
