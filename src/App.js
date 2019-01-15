@@ -14,15 +14,26 @@ const Transfer = (props) => {
   </div>
 }
 
-const List = (props) => {
-  return <div className="transfers-list">
-    props.transfers.map(transfer =>
-      <Transfer {...props}
-        // description={transfer.description}
-        // amount={transfer.amount}
-      />)
-    )
-  </div>
+class List extends Component {
+  state = {
+    transfers: []
+  }
+  componentDidMount() {
+    axios.get('/transfers')
+      .then(res => res.data)
+      .then(transfers => this.setState({ transfers }))
+      .catch(this.handleError);
+  }
+  render () {
+    return <div className="transfers-list">
+      props.transfers.map(transfer =>
+        <Transfer
+          // description={transfer.description}
+          // amount={transfer.amount}
+        />)
+      )
+    </div>
+  }
 }
 
 const Menu = (props) => <div className="menu"></div>;
@@ -32,7 +43,7 @@ const Header = (props) => <nav className="navigation"></nav>;
 const Main = (props) => (
   <div>
     <Switch>
-        <Route exact path='/' render={(props) => <List {...props}/>} />
+        <Route exact path='/' component={List} />
         <Route path='/config' component={Config}/>
     </Switch>
   </div>
@@ -40,7 +51,6 @@ const Main = (props) => (
 
 class App extends Component {
   state = {
-    transfers: [],
     config: {
       budget: "150000",
       currency: "rub"
@@ -50,11 +60,6 @@ class App extends Component {
     axios.get('/config')
       .then(res => res.data)
       .then(config => this.setState({ config }))
-      .catch(this.handleError);
-    //if config is empty - redirect to config page
-    axios.get('/transfers')
-      .then(res => res.data)
-      .then(transfers => this.setState({ transfers }))
       .catch(this.handleError);
   }
 
